@@ -1,6 +1,7 @@
-import axios from "axios";
+//import axios from "axios";
+const axios = require("axios");
 
-export const sendRequest = async (url, method, data) => {
+const sendRequest = async (url, method, data) => {
     return axios({ method, url, data })
         .then((response) => {
             return response;
@@ -9,3 +10,5 @@ export const sendRequest = async (url, method, data) => {
             return error.response;
         });
 };
+
+module.exports.sendRequest = sendRequest;
