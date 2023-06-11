@@ -4,6 +4,7 @@ const COMMANDS_LIST = `
 /cat - get random cat picture
 /dog - get random dog picture
 /weather - get weather in your city
+/places - get cool places to visit
 `;
 
 const GET_RANDOM_DOG_URL = "https://dog.ceo/api/breeds/image/random";
