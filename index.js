@@ -1,11 +1,13 @@
+import telegraf from "telegraf";
 const {
     Telegraf,
     session,
     Scenes: { WizardScene, Stage },
-} = require("telegraf");
-const { COMMANDS_LIST, GET_RANDOM_DOG_URL, GET_RANDOM_CAT_URL } = require("./constants.js");
-const { sendRequest } = require("./axios.js");
-require("dotenv").config();
+} = telegraf;
+import { COMMANDS_LIST, GET_RANDOM_DOG_URL, GET_RANDOM_CAT_URL } from "./constants.js";
+import { sendRequest } from "./axios.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -28,7 +30,12 @@ bot.help(async (ctx) => {
 });
 
 bot.command("dog", async (ctx) => {
-    await ctx.reply("Searching picture...");
+    try {
+        await ctx.reply("Searching picture...");
+    } catch (e) {
+        console.log(e);
+    }
+
     const data = await sendRequest(GET_RANDOM_DOG_URL, "get");
 
     try {
@@ -39,7 +46,12 @@ bot.command("dog", async (ctx) => {
 });
 
 bot.command("cat", async (ctx) => {
-    await ctx.reply("Searching picture...");
+    try {
+        await ctx.reply("Searching picture...");
+    } catch (e) {
+        console.log(e);
+    }
+
     const data = await sendRequest(GET_RANDOM_CAT_URL, "get");
 
     try {
@@ -55,31 +67,45 @@ const getWeather = async (weatherCity) => {
         "get"
     );
 
+    if (!data) {
+        return null;
+    }
+
     return data;
+};
+
+const getPlaceInfo = async (id) => {
+    const obj = await sendRequest(
+        `https://api.opentripmap.com/0.1/en/places/xid/${id}?apikey=${process.env.TRIPMAP_API_KEY}`,
+        "get"
+    );
+
+    const pickExisting = (obj, ...keys) =>
+        Object.fromEntries(keys.filter((n) => n in obj).map((n) => [n, obj[n]]));
+
+    return pickExisting(obj, "name", "preview", "wikipedia_extracts");
 };
 
 const getPlaces = async (coords) => {
     const data = await sendRequest(
-        `https://api.opentripmap.com/0.1/en/places/radius?radius=2000&lon=${coords.lon}&lat=${coords.lat}&src_geom=wikidata&src_attr=wikidata&kinds=interesting_places%2Ctourist_facilities%2Camusements&format=json&limit=15&apikey=${process.env.TRIPMAP_API_KEY}
+        `https://api.opentripmap.com/0.1/en/places/radius?radius=2000&lon=${coords.lon}&lat=${coords.lat}&src_geom=wikidata&src_attr=wikidata&kinds=cultural%2Cnatural%2Cfortifications%2Creligion%2Cfoods%2Camusements&format=json&limit=15&apikey=${process.env.TRIPMAP_API_KEY}
 `,
         "get"
     );
 
-    // console.log(response.data);
-    // let wikidata = response.data[0].wikidata;
-    // const response1 = await sendRequest(`http://www.wikidata.org/entity/${wikidata}.json`);
-    // console.log(wikidata);
-    // let photo = response1.data.entities[wikidata].claims["P18"][0].mainsnak.datavalue.value;
-    // hashsum.string(photo, function (err, hashes) {
-    //     console.log(hashes);
-    //     ctx.replyWithPhoto({
-    //         url: `https://upload.wikimedia.org/wikipedia/commons/${hashes.charAt(0)}/${
-    //             hashes.charAt(0) + hashes.charAt(1)
-    //         }/${photo}`,
-    //     });
-    // });
+    function delay(t, data) {
+        return new Promise((resolve) => {
+            setTimeout(resolve.bind(null, data), t);
+        });
+    }
 
-    return data.map((item) => (item.name !== "" ? item.name : null));
+    const array = [];
+
+    for (let item of data) {
+        array.push(await getPlaceInfo(item.xid).then(delay.bind(null, 20)));
+    }
+
+    return array;
 };
 
 const formatWeatherString = (
@@ -105,8 +131,17 @@ Humidity: ${humidity}%`;
 //TODO: попробовать через html разметку
 const weatherCityHandler = Telegraf.on("text", async (ctx) => {
     const weatherCity = ctx.message.text;
-    await ctx.reply("Getting info...");
+
+    try {
+        await ctx.reply("Getting info...");
+    } catch (e) {
+        console.log(e);
+    }
     const data = await getWeather(weatherCity);
+    if (!data) {
+        ctx.wizard.next();
+        return ctx.wizard.steps[ctx.wizard.cursor](ctx);
+    }
 
     try {
         await ctx.reply(
@@ -132,17 +167,54 @@ const getCityCoords = async (placesCity) => {
         "get"
     );
 
+    if (data.status === "NOT_FOUND") {
+        return null;
+    }
+
     return { lon: data.lon, lat: data.lat };
+};
+
+const formatPlaceDescription = (name, description = "No Description") => {
+    return `
+${name}
+
+${description}`;
 };
 
 const placesCityHandler = Telegraf.on("text", async (ctx) => {
     const placesCity = ctx.message.text;
-    await ctx.reply("Getting info...");
+    try {
+        await ctx.reply("Getting info...");
+    } catch (e) {
+        console.log(e);
+    }
+
     const coords = await getCityCoords(placesCity);
+    if (!coords) {
+        ctx.wizard.next();
+        return ctx.wizard.steps[ctx.wizard.cursor](ctx);
+    }
+
     const data = await getPlaces(coords);
 
     for (let item of data) {
-        await ctx.reply(item);
+        const placeDescription = formatPlaceDescription(item.name, item?.wikipedia_extracts?.text);
+        if (item?.preview?.source) {
+            try {
+                await ctx.replyWithPhoto(
+                    { url: item.preview.source },
+                    { caption: placeDescription }
+                );
+            } catch (e) {
+                console.log(e);
+            }
+        } else {
+            try {
+                await ctx.reply(placeDescription);
+            } catch (e) {
+                console.log(e);
+            }
+        }
     }
 
     return ctx.scene.leave();
@@ -158,8 +230,18 @@ const askCity = async (ctx) => {
     return ctx.wizard.next();
 };
 
-const weatherScene = new WizardScene("weatherScene", askCity, weatherCityHandler);
-const placesScene = new WizardScene("placesScene", askCity, placesCityHandler);
+const notifyAboutError = async (ctx) => {
+    try {
+        await ctx.reply(`City ${ctx.message.text} not found!`);
+    } catch (e) {
+        console.log(e);
+    }
+
+    return ctx.scene.leave();
+};
+
+const weatherScene = new WizardScene("weatherScene", askCity, weatherCityHandler, notifyAboutError);
+const placesScene = new WizardScene("placesScene", askCity, placesCityHandler, notifyAboutError);
 
 const stage = new Stage([weatherScene, placesScene]);
 bot.use(session(), stage.middleware());

@@ -1,13 +1,11 @@
-const axios = require("axios");
+import axios from "axios";
 
-const sendRequest = async (url, method, data) => {
+export const sendRequest = async (url, method, data) => {
     return axios({ method, url, data })
         .then((response) => {
             return response.data;
         })
         .catch((error) => {
-            console.log(error.response.data.error);
+            console.log(error.response.data);
         });
 };
-
-module.exports.sendRequest = sendRequest;
