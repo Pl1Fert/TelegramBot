@@ -24,21 +24,33 @@ You can subscribe to or unsubscribe. Just click on the buttons!
 export const TODOS_MENU_MESSAGE = `
 This is a todos menu.
 
-You can view the todo list or add/delete 1 your task. Just click on the buttons!
+You can view the todo list or add/delete 1 your task. Or you can subscribe for daily reminder for your tasks. Just click on the buttons!
 `;
 
 export const GET_RANDOM_DOG_URL = "https://dog.ceo/api/breeds/image/random";
 export const GET_RANDOM_CAT_URL = "https://api.thecatapi.com/v1/images/search";
 
-export const SCHEDULE_RULE = {
-    second: 10,
-    minute: null,
-    hour: null,
-    dayOfWeek: null,
-    month: null,
-    year: null,
-    date: null,
-    tz: null,
+export const SCHEDULE_RULES = {
+    forWeather: {
+        second: 10,
+        minute: null,
+        hour: null,
+        dayOfWeek: null,
+        month: null,
+        year: null,
+        date: null,
+        tz: null,
+    },
+    forTodos: {
+        second: 10,
+        minute: null,
+        hour: null,
+        dayOfWeek: null,
+        month: null,
+        year: null,
+        date: null,
+        tz: null,
+    },
 };
 
 export const NEEDED_PLACE_PROPS = ["name", "preview", "wikipedia_extracts"];

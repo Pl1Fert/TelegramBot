@@ -11,32 +11,68 @@ const pool = new Pool({
 
 export class DB {
     static async createPerson(userID = null, name = "user") {
-        const newPerson = await pool.query(
-            "INSERT INTO person (id, name) VALUES ($1, $2) RETURNING *",
-            [userID, name]
-        );
+        try {
+            await pool.query("INSERT INTO person (id, name) VALUES ($1, $2) RETURNING *", [
+                userID,
+                name,
+            ]);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     static async getAllUsers() {
-        const persons = await pool.query("SELECT * FROM person");
+        let users;
 
-        console.log(persons.rows);
+        try {
+            users = await pool.query("SELECT * FROM person");
+        } catch (error) {
+            console.log(error);
+        }
+
+        return users;
+    }
+
+    static async getAllTodos() {
+        let todos;
+
+        try {
+            todos = await pool.query("SELECT * FROM todo");
+        } catch (error) {
+            console.log(error);
+        }
+
+        return todos;
     }
 
     static async createTodo(title, content, userId) {
-        const newTodo = await pool.query(
-            "INSERT INTO todo (title, content, user_id) VALUES ($1, $2, $3) RETURNING *",
-            [title, content, userId]
-        );
+        try {
+            await pool.query(
+                "INSERT INTO todo (title, content, user_id) VALUES ($1, $2, $3) RETURNING *",
+                [title, content, userId]
+            );
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     static async getUserTodos(userId) {
-        const todos = await pool.query("SELECT * FROM todo WHERE user_id = $1", [userId]);
+        let todos;
+
+        try {
+            todos = await pool.query("SELECT * FROM todo WHERE user_id = $1", [userId]);
+        } catch (error) {
+            console.log(error);
+        }
 
         return todos.rows;
     }
 
     static async deleteTodo(id) {
-        const deletedTodo = await pool.query("DELETE FROM todo WHERE id = $1", [id]);
+        try {
+            await pool.query("DELETE FROM todo WHERE id = $1", [id]);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

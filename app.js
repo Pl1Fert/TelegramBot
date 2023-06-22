@@ -13,10 +13,16 @@ import {
     placesRecommendationHandler,
     weatherSubscribeHandler,
     subscribeMenuHandler,
-    cancelScheduleJob,
+    cancelWeatherScheduleJob,
     todosMenuHandler,
 } from "./handlers/index.js";
-import { deleteTodo, addTodo, showTodoList } from "./todoServices/index.js";
+import {
+    deleteTodo,
+    addTodo,
+    showTodoList,
+    cancelTodosScheduleJob,
+    todosSubscribeHandler,
+} from "./todoServices/index.js";
 import { sendRequest } from "./axios.js";
 import { askCity, notifyAboutError, askTodoContent, askTodoTitle, askTodoNumber } from "./utils.js";
 import { DB } from "./db.js";
@@ -141,7 +147,7 @@ bot.command("places", async (ctx) => {
     }
 });
 
-bot.action("subscribeButton", async (ctx) => {
+bot.action("weatherSubscribeButton", async (ctx) => {
     await ctx.answerCbQuery();
 
     try {
@@ -151,9 +157,9 @@ bot.action("subscribeButton", async (ctx) => {
     }
 });
 
-bot.action("unsubscribeButton", async (ctx) => {
+bot.action("weatherUnsubscribeButton", async (ctx) => {
     await ctx.answerCbQuery();
-    cancelScheduleJob();
+    cancelWeatherScheduleJob();
 
     try {
         await ctx.reply("Unsubscribed successfully!");
@@ -190,6 +196,28 @@ bot.action("deleteTodoButton", async (ctx) => {
 
     try {
         await ctx.scene.enter("deleteTodoScene");
+    } catch (e) {
+        console.log(e);
+    }
+});
+
+bot.action("todosSubscribeButton", async (ctx) => {
+    await ctx.answerCbQuery();
+
+    try {
+        await todosSubscribeHandler(ctx);
+        await ctx.reply("Subscribed successfully!");
+    } catch (e) {
+        console.log(e);
+    }
+});
+
+bot.action("todosUnsubscribeButton", async (ctx) => {
+    await ctx.answerCbQuery();
+    cancelTodosScheduleJob();
+
+    try {
+        await ctx.reply("Unsubscribed successfully!");
     } catch (e) {
         console.log(e);
     }

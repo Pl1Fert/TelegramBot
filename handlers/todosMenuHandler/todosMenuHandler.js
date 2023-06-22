@@ -11,6 +11,10 @@ export const todosMenuHandler = async (ctx) => {
                     Markup.button.callback("Add todo", "addTodoButton"),
                     Markup.button.callback("Delete todo", "deleteTodoButton"),
                 ],
+                [
+                    Markup.button.callback("Subscribe", "todosSubscribeButton"),
+                    Markup.button.callback("Unsubscribe", "todosUnsubscribeButton"),
+                ],
             ])
         );
     } catch (e) {

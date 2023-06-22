@@ -7,8 +7,8 @@ export const subscribeMenuHandler = async (ctx) => {
             WEATHER_SUBSCRIBE_MENU_MESSAGE,
             Markup.inlineKeyboard([
                 [
-                    Markup.button.callback("Subscribe", "subscribeButton"),
-                    Markup.button.callback("Unsubscribe", "unsubscribeButton"),
+                    Markup.button.callback("Subscribe", "weatherSubscribeButton"),
+                    Markup.button.callback("Unsubscribe", "weatherUnsubscribeButton"),
                 ],
             ])
         );
