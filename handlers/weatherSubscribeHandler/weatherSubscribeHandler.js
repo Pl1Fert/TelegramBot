@@ -27,7 +27,7 @@ export const weatherSubscribeHandler = Telegraf.on("text", async (ctx) => {
     SCHEDULE_JOB = schedule.scheduleJob(SCHEDULE_RULE, async () => {
         const data = await getWeather(weatherCity);
 
-        ctx.reply(
+        await ctx.reply(
             formatWeatherString(
                 data.name,
                 data.weather[0].description,

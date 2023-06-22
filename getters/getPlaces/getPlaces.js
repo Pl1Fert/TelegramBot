@@ -1,5 +1,6 @@
 import { sendRequest } from "../../axios.js";
 import { PLACES_REQUEST_PARAMS } from "../../constants.js";
+import { getPlaceInfo } from "../getPlaceInfo/getPlaceInfo.js";
 
 export const getPlaces = async (coords) => {
     const data = await sendRequest(
