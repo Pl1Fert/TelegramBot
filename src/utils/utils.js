@@ -1,3 +1,5 @@
+import { BOT_FUNCTION_TYPE } from "../constants/constants.js";
+
 export const formatPlaceDescription = (name, description = "No Description") => {
     return `
 ${name}
@@ -42,21 +44,24 @@ export const formatAllTodoStrings = (list) => {
 };
 
 export const askCity = async (ctx) => {
-    try {
-        await ctx.reply("Enter your city in english");
-    } catch (e) {
-        console.log(e);
-    }
+    botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Enter your city to get info");
+    ctx.session.time = ctx.message.text;
+
+    return ctx.wizard.next();
+};
+
+export const askTime = async (ctx) => {
+    botUseFunction(
+        ctx,
+        BOT_FUNCTION_TYPE.REPLY,
+        "Enter time to get a daily report in format: 10:21"
+    );
 
     return ctx.wizard.next();
 };
 
 export const askTodoTitle = async (ctx) => {
-    try {
-        await ctx.reply("Enter the task title");
-    } catch (e) {
-        console.log(e);
-    }
+    botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Enter the task title");
 
     return ctx.wizard.next();
 };
@@ -64,31 +69,39 @@ export const askTodoTitle = async (ctx) => {
 export const askTodoContent = async (ctx) => {
     ctx.session.todoTitle = ctx.message.text;
 
-    try {
-        await ctx.reply("Enter the task content");
-    } catch (e) {
-        console.log(e);
-    }
+    botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Enter the task content");
 
     return ctx.wizard.next();
 };
 
 export const askTodoNumber = async (ctx) => {
-    try {
-        await ctx.reply("Enter the task number to delete");
-    } catch (e) {
-        console.log(e);
-    }
+    botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Enter the task number to delete");
 
     return ctx.wizard.next();
 };
 
 export const notifyAboutError = async (ctx) => {
+    botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Invalid input! Try again!");
+
+    return ctx.scene.leave();
+};
+
+export const botUseFunction = async (ctx, func, ...content) => {
     try {
-        await ctx.reply(`Invalid input! Try again!`);
+        switch (func) {
+            case BOT_FUNCTION_TYPE.REPLY:
+                await ctx.reply(...content);
+                break;
+            case BOT_FUNCTION_TYPE.ENTER_SCENE:
+                await ctx.scene.enter(...content);
+                break;
+            case BOT_FUNCTION_TYPE.REPLY_PHOTO:
+                await ctx.replyWithPhoto(...content);
+                break;
+            default:
+                break;
+        }
     } catch (e) {
         console.log(e);
     }
-
-    return ctx.scene.leave();
 };

@@ -1,5 +1,5 @@
-import { sendRequest } from "../../axios.js";
-import { NEEDED_PLACE_PROPS } from "../../constants.js";
+import { sendRequest } from "../../axios/axios.js";
+import { NEEDED_PLACE_PROPS } from "../../constants/constants.js";
 
 export const getPlaceInfo = async (id) => {
     const obj = await sendRequest(

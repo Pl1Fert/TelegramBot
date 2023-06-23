@@ -1,4 +1,4 @@
-import { sendRequest } from "../../axios.js";
+import { sendRequest } from "../../axios/axios.js";
 
 export const getWeather = async (cityName) => {
     const data = await sendRequest(
