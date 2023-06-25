@@ -9,6 +9,25 @@ const pool = new Pool({
     database: process.env.PGDATABASE,
 });
 
+pool.on("connect", () => {
+    console.log("connected to the database");
+});
+
+export const createTables = () => {
+    pool.query(
+        "CREATE TABLE IF NOT EXISTS person (id INT NOT NULL UNIQUE,name VARCHAR(255))",
+        (err, res) => {
+            console.log(err, res);
+
+            pool.query(
+                "CREATE TABLE IF NOT EXISTS todo (id SERIAL PRIMARY KEY,title VARCHAR(255),content VARCHAR(255),user_id INTEGER,FOREIGN KEY (user_id) REFERENCES person (id))",
+                (err, res) => {
+                    console.log(err, res);
+                }
+            );
+        }
+    );
+};
 export class DB {
     static async createPerson(userID = null, name = "user") {
         try {
@@ -65,7 +84,7 @@ export class DB {
             console.log(error);
         }
 
-        return todos.rows;
+        return todos?.rows ?? [];
     }
 
     static async deleteTodo(id) {

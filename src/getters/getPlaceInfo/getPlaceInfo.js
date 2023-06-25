@@ -1,5 +1,5 @@
-import { sendRequest } from "../../sender/index.js";
-import { NEEDED_PLACE_PROPS } from "../../constants/index.js";
+import { sendRequest } from "../../sender/sendRequest.js";
+import { NEEDED_PLACE_PROPS } from "../../constants/constants.js";
 
 export const getPlaceInfo = async (id) => {
     const obj = await sendRequest(

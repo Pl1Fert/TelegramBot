@@ -1,10 +1,10 @@
 
-create TABLE person(
+CREATE TABLE IF NOT EXISTS person (
     id INT NOT NULL UNIQUE,
     name VARCHAR(255)
 );
 
-create TABLE todo(
+CREATE TABLE IF NOT EXISTS todo (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255),
     content VARCHAR(255),

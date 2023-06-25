@@ -1,7 +1,9 @@
-import { BOT_FUNCTION_TYPE } from "../constants/constants.js";
-import { botUseFunction, formatAllTodoStrings, formatTodoString } from "../utils/utils.js";
+import { BOT_FUNCTION_TYPE } from "../constants/index.js";
+import { botUseFunction, formatAllTodoStrings, formatTodoString } from "../utils/index.js";
 
-export const showTodoList = async (ctx, data) => {
+export const showTodoList = async (ctx, userID) => {
+    const data = await DB.getUserTodos(userID);
+
     if (!data.length) {
         await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "List is empty!");
         return;

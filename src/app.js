@@ -8,15 +8,15 @@ import {
     GET_RANDOM_CAT_URL,
     GREETING_MESSAGE,
     BOT_FUNCTION_TYPE,
-} from "./constants/constants.js";
+} from "./constants/index.js";
 import {
     subscribeMenuHandler,
     todosMenuHandler,
     cancelWeatherScheduleJob,
 } from "./handlers/index.js";
 import { showTodoList, cancelTodosScheduleJob } from "./todoServices/index.js";
-import { sendRequest } from "./axios/axios.js";
-import { botUseFunction } from "./utils/utils.js";
+import { sendRequest } from "./sender/index.js";
+import { botUseFunction, quitScene } from "./utils/index.js";
 import {
     weatherSubscribeScene,
     todosSubscribeScene,
@@ -24,8 +24,8 @@ import {
     placesRecommendationScene,
     addTodoScene,
     deleteTodoScene,
-} from "./scenes/scenes.js";
-import { DB } from "./database/db.js";
+} from "./scenes/index.js";
+import { DB, createTables } from "./database/index.js";
 
 const {
     Telegraf,
@@ -43,6 +43,7 @@ bot.start(async (ctx) => {
         ` + GREETING_MESSAGE
     );
 
+    createTables();
     await DB.createPerson(ctx.message.from.id, ctx.message.from.first_name);
 });
 
@@ -66,17 +67,12 @@ bot.command("cat", async (ctx) => {
     await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY_PHOTO, { url: data[0].url });
 });
 
-const quit = async (ctx) => {
-    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "quit");
-    return ctx.scene.leave();
-};
-
-weatherSubscribeScene.command("quit", quit);
-todosSubscribeScene.command("quit", quit);
-weatherScene.command("quit", quit);
-placesRecommendationScene.command("quit", quit);
-addTodoScene.command("quit", quit);
-deleteTodoScene.command("quit", quit);
+weatherSubscribeScene.command("quit", quitScene);
+todosSubscribeScene.command("quit", quitScene);
+weatherScene.command("quit", quitScene);
+placesRecommendationScene.command("quit", quitScene);
+addTodoScene.command("quit", quitScene);
+deleteTodoScene.command("quit", quitScene);
 
 const stage = new Stage([
     weatherScene,
@@ -90,7 +86,7 @@ const stage = new Stage([
 bot.use(session(), stage.middleware());
 
 bot.command("weather", async (ctx) => {
-    botUseFunction(ctx, BOT_FUNCTION_TYPE.ENTER_SCENE, "weatherScene");
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.ENTER_SCENE, "weatherScene");
 });
 
 bot.command("todos", async (ctx) => {
@@ -102,13 +98,13 @@ bot.command("subscribe", async (ctx) => {
 });
 
 bot.command("places", async (ctx) => {
-    botUseFunction(ctx, BOT_FUNCTION_TYPE.ENTER_SCENE, "placesRecommendationScene");
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.ENTER_SCENE, "placesRecommendationScene");
 });
 
 bot.action("weatherSubscribeButton", async (ctx) => {
     await ctx.answerCbQuery();
 
-    botUseFunction(ctx, BOT_FUNCTION_TYPE.ENTER_SCENE, "weatherSubscribeScene");
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.ENTER_SCENE, "weatherSubscribeScene");
 });
 
 bot.action("weatherUnsubscribeButton", async (ctx) => {
@@ -122,19 +118,17 @@ bot.action("weatherUnsubscribeButton", async (ctx) => {
 
 bot.action("showListButton", async (ctx) => {
     await ctx.answerCbQuery();
-
-    const data = await DB.getUserTodos(ctx.update.callback_query.from.id);
-    await showTodoList(ctx, data);
+    await showTodoList(ctx, ctx.update.callback_query.from.id);
 });
 
 bot.action("addTodoButton", async (ctx) => {
     await ctx.answerCbQuery();
-    botUseFunction(ctx, BOT_FUNCTION_TYPE.ENTER_SCENE, "addTodoScene");
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.ENTER_SCENE, "addTodoScene");
 });
 
 bot.action("deleteTodoButton", async (ctx) => {
     await ctx.answerCbQuery();
-    botUseFunction(ctx, BOT_FUNCTION_TYPE.ENTER_SCENE, "deleteTodoScene");
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.ENTER_SCENE, "deleteTodoScene");
 });
 
 bot.action("todosSubscribeButton", async (ctx) => {

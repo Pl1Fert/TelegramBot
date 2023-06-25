@@ -1,6 +1,6 @@
-import { sendRequest } from "../../sender/index.js";
-import { PLACES_REQUEST_PARAMS } from "../../constants/index.js";
-import { getPlaceInfo } from "../getPlaceInfo/index.js";
+import { sendRequest } from "../../sender/sendRequest.js";
+import { PLACES_REQUEST_PARAMS } from "../../constants/constants.js";
+import { getPlaceInfo } from "../getPlaceInfo/getPlaceInfo.js";
 
 export const getPlaces = async (coords) => {
     const data = await sendRequest(

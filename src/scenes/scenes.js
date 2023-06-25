@@ -16,7 +16,7 @@ import {
     askTodoNumber,
     askTodoTitle,
     notifyAboutError,
-} from "../utils/utils.js";
+} from "../utils/index.js";
 
 export const weatherSubscribeScene = new WizardScene(
     "weatherSubscribeScene",

@@ -105,3 +105,8 @@ export const botUseFunction = async (ctx, func, ...content) => {
         console.log(e);
     }
 };
+
+export const quitScene = async (ctx) => {
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "quit");
+    return ctx.scene.leave();
+};

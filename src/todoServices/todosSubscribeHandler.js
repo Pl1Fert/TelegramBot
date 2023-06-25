@@ -1,9 +1,10 @@
 import schedule from "node-schedule";
 
-import { BOT_FUNCTION_TYPE } from "../constants/constants.js";
-import { DB } from "../database/db.js";
+import { BOT_FUNCTION_TYPE } from "../constants/index.js";
+import { DB } from "../database/index.js";
+import { botUseFunction } from "../utils/index.js";
+
 import { showTodoList } from "./showTodoList.js";
-import { botUseFunction } from "../utils/utils.js";
 
 let SCHEDULE_JOB;
 
@@ -31,10 +32,8 @@ export const todosSubscribeHandler = async (ctx) => {
     cancelTodosScheduleJob();
 
     SCHEDULE_JOB = schedule.scheduleJob({ hour: +hour, minute: +minute, second: 0 }, async () => {
-        const data = await DB.getUserTodos(userID);
-
         await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Daily reminder!");
-        await showTodoList(ctx, data);
+        await showTodoList(ctx, userID);
     });
 
     await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Subscribed successfully!");

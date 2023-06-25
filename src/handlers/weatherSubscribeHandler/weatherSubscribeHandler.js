@@ -1,9 +1,9 @@
 import { Telegraf } from "telegraf";
 import schedule from "node-schedule";
 
-import { botUseFunction, formatWeatherString } from "../../utils/utils.js";
+import { botUseFunction, formatWeatherString } from "../../utils/index.js";
 import { getWeather } from "../../api/index.js";
-import { BOT_FUNCTION_TYPE } from "../../constants/constants.js";
+import { BOT_FUNCTION_TYPE } from "../../constants/index.js";
 
 let SCHEDULE_JOB;
 
@@ -30,7 +30,7 @@ export const weatherSubscribeHandler = Telegraf.on("text", async (ctx) => {
 
     cancelWeatherScheduleJob();
 
-    SCHEDULE_JOB = schedule.scheduleJob({ hour: hour, minute: minute, second: 0 }, async () => {
+    SCHEDULE_JOB = schedule.scheduleJob({ hour: +hour, minute: +minute, second: 0 }, async () => {
         const data = await getWeather(weatherCity);
 
         await botUseFunction(

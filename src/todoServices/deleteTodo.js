@@ -1,6 +1,6 @@
-import { BOT_FUNCTION_TYPE } from "../constants/constants.js";
-import { DB } from "../database/db.js";
-import { botUseFunction } from "../utils/utils.js";
+import { BOT_FUNCTION_TYPE } from "../constants/index.js";
+import { DB } from "../database/index.js";
+import { botUseFunction } from "../utils/index.js";
 
 export const deleteTodo = async (ctx) => {
     const taskNumberText = ctx.message.text;
