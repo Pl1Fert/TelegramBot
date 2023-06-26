@@ -30,22 +30,25 @@ export const weatherSubscribeHandler = Telegraf.on("text", async (ctx) => {
 
     cancelWeatherScheduleJob();
 
-    SCHEDULE_JOB = schedule.scheduleJob({ hour: +hour, minute: +minute, second: 0 }, async () => {
-        const data = await getWeather(weatherCity);
+    SCHEDULE_JOB = schedule.scheduleJob(
+        { hour: +hour, minute: +minute, second: 0, tz: "Europe/Minsk" },
+        async () => {
+            const data = await getWeather(weatherCity);
 
-        await botUseFunction(
-            ctx,
-            BOT_FUNCTION_TYPE.REPLY,
-            formatWeatherString(
-                data.name,
-                data.weather[0].description,
-                data.main.temp,
-                data.main.feels_like,
-                data.wind.speed,
-                data.main.humidity
-            )
-        );
-    });
+            await botUseFunction(
+                ctx,
+                BOT_FUNCTION_TYPE.REPLY,
+                formatWeatherString(
+                    data.name,
+                    data.weather[0].description,
+                    data.main.temp,
+                    data.main.feels_like,
+                    data.wind.speed,
+                    data.main.humidity
+                )
+            );
+        }
+    );
 
     await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Subscribed successfully!");
 

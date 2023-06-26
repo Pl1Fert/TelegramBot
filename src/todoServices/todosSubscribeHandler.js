@@ -31,10 +31,13 @@ export const todosSubscribeHandler = async (ctx) => {
 
     cancelTodosScheduleJob();
 
-    SCHEDULE_JOB = schedule.scheduleJob({ hour: +hour, minute: +minute, second: 0 }, async () => {
-        await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Daily reminder!");
-        await showTodoList(ctx, userID);
-    });
+    SCHEDULE_JOB = schedule.scheduleJob(
+        { hour: +hour, minute: +minute, second: 0, tz: "Europe/Minsk" },
+        async () => {
+            await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Daily reminder!");
+            await showTodoList(ctx, userID);
+        }
+    );
 
     await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Subscribed successfully!");
 
