@@ -34,11 +34,13 @@ export const GET_RANDOM_CAT_URL = "https://api.thecatapi.com/v1/images/search";
 export const NEEDED_PLACE_PROPS = ["name", "preview", "wikipedia_extracts"];
 
 export const PLACES_REQUEST_PARAMS = {
-    limit: 3,
+    limit: 20,
     radius: 2000,
     kinds: ["cultural", "natural", "fortifications", "religion", "foods", "amusements"],
     format: "json",
 };
+
+export const MAX_PLACES = 3;
 
 export const BOT_FUNCTION_TYPE = {
     REPLY: "reply",

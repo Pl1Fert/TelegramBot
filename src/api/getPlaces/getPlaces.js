@@ -1,6 +1,7 @@
 import { sendRequest } from "../../sender/index.js";
-import { PLACES_REQUEST_PARAMS } from "../../constants/index.js";
+import { PLACES_REQUEST_PARAMS, MAX_PLACES } from "../../constants/index.js";
 import { getPlaceInfo } from "../getPlaceInfo/index.js";
+import { randomUniqueArray } from "../../utils/index.js";
 
 export const getPlaces = async (coords) => {
     const data = await sendRequest(
@@ -24,9 +25,9 @@ export const getPlaces = async (coords) => {
     }
 
     const array = [];
-
-    for (let item of data) {
-        array.push(await getPlaceInfo(item.xid).then(delay.bind(null, 20)));
+    const indexArray = randomUniqueArray(5, 19);
+    for (let i = 0; i < MAX_PLACES; i++) {
+        array.push(await getPlaceInfo(data[indexArray[i]].xid).then(delay.bind(null, 20)));
     }
 
     return array;

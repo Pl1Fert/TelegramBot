@@ -110,3 +110,7 @@ export const quitScene = async (ctx) => {
     await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "quit");
     return ctx.scene.leave();
 };
+
+export const randomUniqueArray = (length, max) => [
+    ...new Set([...new Array(length)].map(() => Math.round(Math.random() * max))),
+];
