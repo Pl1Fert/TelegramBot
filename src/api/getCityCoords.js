@@ -1,8 +1,9 @@
-import { sendRequest } from "../../sender/index.js";
+import { ENV_VARS } from "constants";
+import { sendRequest } from "utils";
 
 export const getCityCoords = async (cityName) => {
     const data = await sendRequest(
-        `https://api.opentripmap.com/0.1/en/places/geoname?name=${cityName}&apikey=${process.env.TRIPMAP_API_KEY}`,
+        `${ENV_VARS.TRIPMAP_API_URL}/geoname?name=${cityName}&apikey=${ENV_VARS.TRIPMAP_API_KEY}`,
         "get"
     );
 

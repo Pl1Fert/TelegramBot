@@ -1,12 +1,12 @@
 import { Telegraf } from "telegraf";
 
-import { botUseFunction, formatPlaceDescription } from "../../utils/index.js";
-import { getPlaces, getCityCoords } from "../../api/index.js";
-import { BOT_FUNCTION_TYPE } from "../../constants/index.js";
+import { getCityCoords, getPlaces } from "api";
+import { BOT_FUNCTION_TYPE, LOADING_MESSAGES } from "constants";
+import { botUseFunction, formatPlaceDescription } from "utils";
 
 export const placesRecommendationHandler = Telegraf.on("text", async (ctx) => {
     const cityName = ctx.message.text;
-    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Getting info...");
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, LOADING_MESSAGES.GETTING_INFO);
 
     const coords = await getCityCoords(cityName);
     if (!coords) {
@@ -16,7 +16,7 @@ export const placesRecommendationHandler = Telegraf.on("text", async (ctx) => {
 
     const data = await getPlaces(coords);
 
-    for (let item of data) {
+    for (const item of data) {
         const placeDescription = formatPlaceDescription(item.name, item?.wikipedia_extracts?.text);
 
         if (item?.preview?.source) {

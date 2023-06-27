@@ -1,9 +1,9 @@
-import { Telegraf } from "telegraf";
 import schedule from "node-schedule";
+import { Telegraf } from "telegraf";
 
-import { botUseFunction, formatWeatherString } from "../../utils/index.js";
-import { getWeather } from "../../api/index.js";
-import { BOT_FUNCTION_TYPE } from "../../constants/index.js";
+import { getWeather } from "api";
+import { BOT_FUNCTION_TYPE, SUCCESS_MESSAGES } from "constants";
+import { botUseFunction, formatWeatherString, isValidTime } from "utils";
 
 let SCHEDULE_JOB;
 
@@ -17,7 +17,7 @@ export const weatherSubscribeHandler = Telegraf.on("text", async (ctx) => {
     const weatherCity = ctx.message.text;
     const [hour, minute] = ctx.session.time.split(":");
 
-    if (hour < 0 || hour > 24 || minute < 0 || minute > 60 || !hour || !minute) {
+    if (isValidTime(hour, minute)) {
         ctx.wizard.next();
         return ctx.wizard.steps[ctx.wizard.cursor](ctx);
     }
@@ -50,7 +50,7 @@ export const weatherSubscribeHandler = Telegraf.on("text", async (ctx) => {
         }
     );
 
-    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Subscribed successfully!");
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, SUCCESS_MESSAGES.SUBSCRIBED);
 
     return ctx.scene.leave();
 });

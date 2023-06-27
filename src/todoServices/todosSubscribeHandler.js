@@ -1,10 +1,15 @@
 import schedule from "node-schedule";
 
-import { BOT_FUNCTION_TYPE } from "../constants/index.js";
-import { DB } from "../database/index.js";
-import { botUseFunction } from "../utils/index.js";
+import {
+    BOT_FUNCTION_TYPE,
+    DAILY_REMINDER_MESSAGE,
+    ERROR_MESSAGES,
+    SUCCESS_MESSAGES,
+} from "constants";
+import { Task } from "database/db";
+import { botUseFunction, isValidTime } from "utils";
 
-import { showTodoList } from "./showTodoList.js";
+import { showTodoList } from "./showTodoList";
 
 let SCHEDULE_JOB;
 
@@ -18,18 +23,14 @@ export const todosSubscribeHandler = async (ctx) => {
     const userID = ctx.message.from.id;
     const [hour, minute] = ctx.message.text.split(":");
 
-    if (hour < 0 || hour > 24 || minute < 0 || minute > 60 || !hour || !minute) {
+    if (isValidTime(hour, minute)) {
         ctx.wizard.next();
         return ctx.wizard.steps[ctx.wizard.cursor](ctx);
     }
 
-    const data = await DB.getUserTodos(userID);
+    const data = await Task.getUserTodos(userID);
     if (!data.length) {
-        await botUseFunction(
-            ctx,
-            BOT_FUNCTION_TYPE.REPLY,
-            "List is empty! Nothing to set reminder!"
-        );
+        await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, ERROR_MESSAGES.EMPTY_LIST);
         return ctx.scene.leave();
     }
 
@@ -38,12 +39,12 @@ export const todosSubscribeHandler = async (ctx) => {
     SCHEDULE_JOB = schedule.scheduleJob(
         { hour: +hour, minute: +minute, second: 0, tz: "Europe/Minsk" },
         async () => {
-            await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Daily reminder!");
+            await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, DAILY_REMINDER_MESSAGE);
             await showTodoList(ctx, userID);
         }
     );
 
-    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Subscribed successfully!");
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, SUCCESS_MESSAGES.SUBSCRIBED);
 
     return ctx.scene.leave();
 };

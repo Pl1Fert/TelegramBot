@@ -1,12 +1,12 @@
-import { BOT_FUNCTION_TYPE } from "../constants/index.js";
-import { DB } from "../database/db.js";
-import { botUseFunction, formatAllTodoStrings, formatTodoString } from "../utils/index.js";
+import { BOT_FUNCTION_TYPE, ERROR_MESSAGES } from "constants";
+import { Task } from "database/db";
+import { botUseFunction, formatAllTodoStrings, formatTodoString } from "utils";
 
 export const showTodoList = async (ctx, userID) => {
-    const data = await DB.getUserTodos(userID);
+    const data = await Task.getUserTodos(userID);
 
     if (!data.length) {
-        await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "List is empty!");
+        await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, ERROR_MESSAGES.EMPTY_LIST);
         return;
     }
 

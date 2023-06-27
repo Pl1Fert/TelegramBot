@@ -1,13 +1,13 @@
 import { Telegraf } from "telegraf";
 
-import { botUseFunction, formatWeatherString } from "../../utils/index.js";
-import { getWeather } from "../../api/index.js";
-import { BOT_FUNCTION_TYPE } from "../../constants/index.js";
+import { getWeather } from "api";
+import { BOT_FUNCTION_TYPE, LOADING_MESSAGES } from "constants";
+import { botUseFunction, formatWeatherString } from "utils";
 
 export const weatherHandler = Telegraf.on("text", async (ctx) => {
     const weatherCity = ctx.message.text;
 
-    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Getting info...");
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, LOADING_MESSAGES.GETTING_INFO);
 
     const data = await getWeather(weatherCity);
     if (!data) {

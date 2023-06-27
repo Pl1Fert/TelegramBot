@@ -1,12 +1,15 @@
 import pg from "pg";
+
+import { ENV_VARS } from "constants";
+
 const { Pool } = pg;
 
 const pool = new Pool({
-    user: process.env.PGUSER,
-    password: process.env.PGPASSWROD,
-    host: process.env.PGHOST,
-    port: process.env.PGPORT,
-    database: process.env.PGDATABASE,
+    user: ENV_VARS.PGUSER,
+    password: ENV_VARS.PGPASSWORD,
+    host: ENV_VARS.PGHOST,
+    port: ENV_VARS.PGPORT,
+    database: ENV_VARS.PGDATABASE,
     ssl: { rejectUnauthorized: false },
 });
 
@@ -14,7 +17,7 @@ pool.on("connect", () => {
     console.log("connected to the database");
 });
 
-export const createTables = () => {
+export const createDatabaseTables = () => {
     pool.query(
         "CREATE TABLE IF NOT EXISTS person (id INT NOT NULL UNIQUE,name VARCHAR(255))",
         (err, res) => {
@@ -29,7 +32,7 @@ export const createTables = () => {
         }
     );
 };
-export class DB {
+export class User {
     static async createPerson(userID = null, name = "user") {
         try {
             await pool.query("INSERT INTO person (id, name) VALUES ($1, $2) RETURNING *", [
@@ -40,19 +43,9 @@ export class DB {
             console.log(error);
         }
     }
+}
 
-    static async getAllUsers() {
-        let users;
-
-        try {
-            users = await pool.query("SELECT * FROM person");
-        } catch (error) {
-            console.log(error);
-        }
-
-        return users;
-    }
-
+export class Task {
     static async getAllTodos() {
         let todos;
 

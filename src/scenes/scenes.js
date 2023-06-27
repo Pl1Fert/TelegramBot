@@ -1,14 +1,8 @@
+import { SCENE_NAMES } from "constants";
+import { placesRecommendationHandler, weatherHandler, weatherSubscribeHandler } from "handlers";
 import telegraf from "telegraf";
-const {
-    Scenes: { WizardScene },
-} = telegraf;
+import { addTodo, deleteTodo, todosSubscribeHandler } from "todoServices";
 
-import {
-    placesRecommendationHandler,
-    weatherHandler,
-    weatherSubscribeHandler,
-} from "../handlers/index.js";
-import { addTodo, deleteTodo, todosSubscribeHandler } from "../todoServices/index.js";
 import {
     askCity,
     askTime,
@@ -16,41 +10,51 @@ import {
     askTodoNumber,
     askTodoTitle,
     notifyAboutError,
-} from "../utils/index.js";
+    askCityForSubscribe,
+} from "utils";
+
+const {
+    Scenes: { WizardScene },
+} = telegraf;
 
 export const weatherSubscribeScene = new WizardScene(
-    "weatherSubscribeScene",
+    SCENE_NAMES.WEATHER_SUBSCRIBE_SCENE,
     askTime,
-    askCity,
+    askCityForSubscribe,
     weatherSubscribeHandler,
     notifyAboutError
 );
 
 export const todosSubscribeScene = new WizardScene(
-    "todosSubscribeScene",
+    SCENE_NAMES.TODO_SUBSCRIBE_SCENE,
     askTime,
     todosSubscribeHandler,
     notifyAboutError
 );
 
 export const weatherScene = new WizardScene(
-    "weatherScene",
+    SCENE_NAMES.WEATHER_SCENE,
     askCity,
     weatherHandler,
     notifyAboutError
 );
 
 export const placesRecommendationScene = new WizardScene(
-    "placesRecommendationScene",
+    SCENE_NAMES.PLACES_RECOMMENDATION_SCENE,
     askCity,
     placesRecommendationHandler,
     notifyAboutError
 );
 
-export const addTodoScene = new WizardScene("addTodoScene", askTodoTitle, askTodoContent, addTodo);
+export const addTodoScene = new WizardScene(
+    SCENE_NAMES.ADD_TODO_SCENE,
+    askTodoTitle,
+    askTodoContent,
+    addTodo
+);
 
 export const deleteTodoScene = new WizardScene(
-    "deleteTodoScene",
+    SCENE_NAMES.DELETE_TODO_SCENE,
     askTodoNumber,
     deleteTodo,
     notifyAboutError

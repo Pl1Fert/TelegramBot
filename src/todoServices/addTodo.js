@@ -1,13 +1,13 @@
-import { BOT_FUNCTION_TYPE } from "../constants/index.js";
-import { DB } from "../database/index.js";
-import { botUseFunction } from "../utils/index.js";
+import { BOT_FUNCTION_TYPE, SUCCESS_MESSAGES } from "constants";
+import { Task } from "database/db";
+import { botUseFunction } from "utils";
 
 export const addTodo = async (ctx) => {
     ctx.session.todoContent = ctx.message.text;
 
-    await DB.createTodo(ctx.session.todoTitle, ctx.session.todoContent, ctx.message.from.id);
+    await Task.createTodo(ctx.session.todoTitle, ctx.session.todoContent, ctx.message.from.id);
 
-    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "Added successfully!");
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, SUCCESS_MESSAGES.ADDED);
 
     return ctx.scene.leave();
 };

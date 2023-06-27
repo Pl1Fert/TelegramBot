@@ -1,4 +1,4 @@
-export const COMMANDS_LIST = `
+export const COMMANDS_LIST_MESSAGE = `
 /start - start the chat with bot
 /help - list with all commands
 /cat - get random cat picture
@@ -28,22 +28,29 @@ This is a todos menu.
 You can view the todo list or add/delete 1 your task. Or you can subscribe for daily reminder for your tasks. Just click on the buttons!
 `;
 
-export const GET_RANDOM_DOG_URL = "https://dog.ceo/api/breeds/image/random";
-export const GET_RANDOM_CAT_URL = "https://api.thecatapi.com/v1/images/search";
-
-export const NEEDED_PLACE_PROPS = ["name", "preview", "wikipedia_extracts"];
-
-export const PLACES_REQUEST_PARAMS = {
-    limit: 20,
-    radius: 2000,
-    kinds: ["cultural", "natural", "fortifications", "religion", "foods", "amusements"],
-    format: "json",
+export const SUCCESS_MESSAGES = {
+    DELETED: "Deleted successfully!",
+    ADDED: "Added successfully!",
+    SUBSCRIBED: "Subscribed successfully!",
+    UNSUBSCRIBED: "Unsubscribed successfully!",
 };
 
-export const MAX_PLACES = 3;
+export const LOADING_MESSAGES = {
+    SEARCHING_PICTURE: "Searching picture...",
+    GETTING_INFO: "Getting info...",
+};
 
-export const BOT_FUNCTION_TYPE = {
-    REPLY: "reply",
-    REPLY_PHOTO: "photo",
-    ENTER_SCENE: "scene",
+export const DAILY_REMINDER_MESSAGE = "Daily reminder!";
+
+export const ERROR_MESSAGES = {
+    EMPTY_LIST: "List is empty!",
+    INVALID_INPUT: "Invalid input! Please try again!",
+};
+
+export const INPUT_REQUEST_MESSAGES = {
+    CITY_NAME: "Enter your city to get info",
+    TIME: "Enter time to get a daily report in format: 10:21",
+    TODO_TITLE: "Enter the task title",
+    TODO_CONTENT: "Enter the task content",
+    TODO_NUMBER: "Enter the task number to delete",
 };
