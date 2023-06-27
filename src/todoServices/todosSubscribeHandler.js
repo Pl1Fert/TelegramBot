@@ -24,8 +24,12 @@ export const todosSubscribeHandler = async (ctx) => {
     }
 
     const data = await DB.getUserTodos(userID);
-    if (!data) {
-        await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, "List is empty!");
+    if (!data.length) {
+        await botUseFunction(
+            ctx,
+            BOT_FUNCTION_TYPE.REPLY,
+            "List is empty! Nothing to set reminder!"
+        );
         return ctx.scene.leave();
     }
 
