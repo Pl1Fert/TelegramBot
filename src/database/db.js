@@ -34,14 +34,10 @@ export const createDatabaseTables = () => {
 };
 export class User {
     static async createPerson(userID = null, name = "user") {
-        try {
-            await pool.query("INSERT INTO person (id, name) VALUES ($1, $2) RETURNING *", [
-                userID,
-                name,
-            ]);
-        } catch (error) {
-            console.log(error);
-        }
+        await pool.query("INSERT INTO person (id, name) VALUES ($1, $2) RETURNING *", [
+            userID,
+            name,
+        ]);
     }
 }
 
@@ -49,43 +45,27 @@ export class Task {
     static async getAllTodos() {
         let todos;
 
-        try {
-            todos = await pool.query("SELECT * FROM todo");
-        } catch (error) {
-            console.log(error);
-        }
+        todos = await pool.query("SELECT * FROM todo");
 
         return todos;
     }
 
     static async createTodo(title, content, userId) {
-        try {
-            await pool.query(
-                "INSERT INTO todo (title, content, user_id) VALUES ($1, $2, $3) RETURNING *",
-                [title, content, userId]
-            );
-        } catch (error) {
-            console.log(error);
-        }
+        await pool.query(
+            "INSERT INTO todo (title, content, user_id) VALUES ($1, $2, $3) RETURNING *",
+            [title, content, userId]
+        );
     }
 
     static async getUserTodos(userId) {
         let todos;
 
-        try {
-            todos = await pool.query("SELECT * FROM todo WHERE user_id = $1", [userId]);
-        } catch (error) {
-            console.log(error);
-        }
+        todos = await pool.query("SELECT * FROM todo WHERE user_id = $1", [userId]);
 
         return todos?.rows ?? [];
     }
 
     static async deleteTodo(id) {
-        try {
-            await pool.query("DELETE FROM todo WHERE id = $1", [id]);
-        } catch (error) {
-            console.log(error);
-        }
+        await pool.query("DELETE FROM todo WHERE id = $1", [id]);
     }
 }

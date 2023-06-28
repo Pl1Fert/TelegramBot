@@ -45,6 +45,7 @@ export const DAILY_REMINDER_MESSAGE = "Daily reminder!";
 export const ERROR_MESSAGES = {
     EMPTY_LIST: "List is empty!",
     INVALID_INPUT: "Invalid input! Please try again!",
+    WENT_WRONG: "Smething went wrong!",
 };
 
 export const INPUT_REQUEST_MESSAGES = {

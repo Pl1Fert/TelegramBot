@@ -23,12 +23,19 @@ export const todosSubscribeHandler = async (ctx) => {
     const userID = ctx.message.from.id;
     const [hour, minute] = ctx.message.text.split(":");
 
-    if (isValidTime(hour, minute)) {
+    if (!isValidTime(hour, minute)) {
         ctx.wizard.next();
         return ctx.wizard.steps[ctx.wizard.cursor](ctx);
     }
 
-    const data = await Task.getUserTodos(userID);
+    let data = [];
+    try {
+        data = await Task.getUserTodos(userID);
+    } catch (error) {
+        await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, ERROR_MESSAGES.WENT_WRONG);
+        return ctx.scene.leave();
+    }
+
     if (!data.length) {
         await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, ERROR_MESSAGES.EMPTY_LIST);
         return ctx.scene.leave();

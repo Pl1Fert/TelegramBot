@@ -1,12 +1,12 @@
 import { BOT_FUNCTION_TYPE, INPUT_REQUEST_MESSAGES, ERROR_MESSAGES } from "constants";
 
 import { botUseFunction } from "utils";
-import { isValidTime } from "validators";
+import { isValidTime } from "./validators";
 
 export const askCityForSubscribe = async (ctx) => {
     const [hour, minute] = ctx.message.text.split(":");
 
-    if (isValidTime(hour, minute)) {
+    if (!isValidTime(hour, minute)) {
         await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, ERROR_MESSAGES.INVALID_INPUT);
         return ctx.scene.leave();
     }

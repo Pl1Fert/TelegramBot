@@ -17,7 +17,7 @@ export const weatherSubscribeHandler = Telegraf.on("text", async (ctx) => {
     const weatherCity = ctx.message.text;
     const [hour, minute] = ctx.session.time.split(":");
 
-    if (isValidTime(hour, minute)) {
+    if (!isValidTime(hour, minute)) {
         ctx.wizard.next();
         return ctx.wizard.steps[ctx.wizard.cursor](ctx);
     }
