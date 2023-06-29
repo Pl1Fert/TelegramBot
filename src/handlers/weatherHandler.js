@@ -1,7 +1,6 @@
-import { Telegraf } from "telegraf";
-
 import { getWeather } from "api";
-import { BOT_FUNCTION_TYPE, LOADING_MESSAGES } from "constants";
+import { BOT_FUNCTION_TYPE, LOADING_MESSAGES } from "myconstants";
+import { Telegraf } from "telegraf";
 import { botUseFunction, formatWeatherString } from "utils";
 
 export const weatherHandler = Telegraf.on("text", async (ctx) => {

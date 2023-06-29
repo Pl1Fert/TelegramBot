@@ -1,7 +1,6 @@
-import { Telegraf } from "telegraf";
-
 import { getCityCoords, getPlaces } from "api";
-import { BOT_FUNCTION_TYPE, LOADING_MESSAGES } from "constants";
+import { BOT_FUNCTION_TYPE, LOADING_MESSAGES } from "myconstants";
+import { Telegraf } from "telegraf";
 import { botUseFunction, formatPlaceDescription } from "utils";
 
 export const placesRecommendationHandler = Telegraf.on("text", async (ctx) => {
@@ -16,18 +15,19 @@ export const placesRecommendationHandler = Telegraf.on("text", async (ctx) => {
 
     const data = await getPlaces(coords);
 
+    /* eslint-disable-next-line */
     for (const item of data) {
         const placeDescription = formatPlaceDescription(item.name, item?.wikipedia_extracts?.text);
 
         if (item?.preview?.source) {
-            await botUseFunction(
+            botUseFunction(
                 ctx,
                 BOT_FUNCTION_TYPE.REPLY_PHOTO,
                 { url: item.preview.source },
                 { caption: placeDescription }
             );
         } else {
-            await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, placeDescription);
+            botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, placeDescription);
         }
     }
 

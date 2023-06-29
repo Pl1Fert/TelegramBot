@@ -1,6 +1,5 @@
+import { BOT_FUNCTION_TYPE, BUTTONS_TEXT, BUTTONS_VALUE, TODOS_MENU_MESSAGE } from "myconstants";
 import { Markup } from "telegraf";
-
-import { BOT_FUNCTION_TYPE, BUTTONS_TEXT, BUTTONS_VALUE, TODOS_MENU_MESSAGE } from "constants";
 import { botUseFunction } from "utils";
 
 export const todosMenuHandler = async (ctx) => {

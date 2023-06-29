@@ -1,4 +1,16 @@
 {
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"],
+                "moduleDirectory": ["node_modules", "src/"]
+            },
+            "alias": {
+                "map": [["myconstants", "./src/constants/"]],
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
+        }
+    },
     "env": {
         "es6": true,
         "browser": true,
@@ -16,23 +28,9 @@
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error",
         "import/first": "error",
+        "prettier/prettier": "error",
         "import/newline-after-import": "error",
         "import/no-duplicates": "error",
-        "import/order": [
-            "error",
-            {
-                "groups": [
-                    "builtin",
-                    "external",
-                    "internal",
-                    "parent",
-                    "sibling",
-                    "index",
-                    "object",
-                    "type"
-                ],
-                "newlines-between": "always-and-inside-groups"
-            }
-        ]
+        "import/prefer-default-export": "off"
     }
 }

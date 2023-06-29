@@ -1,6 +1,6 @@
-import { BOT_FUNCTION_TYPE, ERROR_MESSAGES } from "constants";
 import { Task } from "database/db";
-import { botUseFunction, formatAllTodoStrings, formatTodoString } from "utils";
+import { BOT_FUNCTION_TYPE, ERROR_MESSAGES } from "myconstants";
+import { botUseFunction, formatTodoString } from "utils";
 
 export const showTodoList = async (ctx, userID) => {
     let data = [];
@@ -8,7 +8,7 @@ export const showTodoList = async (ctx, userID) => {
         data = await Task.getUserTodos(userID);
     } catch (error) {
         await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, ERROR_MESSAGES.WENT_WRONG);
-        return ctx.scene.leave();
+        return;
     }
 
     if (!data.length) {
@@ -17,9 +17,9 @@ export const showTodoList = async (ctx, userID) => {
     }
 
     const todoList = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i += 1) {
         todoList.push(formatTodoString(i + 1, data[i].title, data[i].content));
     }
 
-    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, formatAllTodoStrings(todoList));
+    await botUseFunction(ctx, BOT_FUNCTION_TYPE.REPLY, todoList.join(""));
 };

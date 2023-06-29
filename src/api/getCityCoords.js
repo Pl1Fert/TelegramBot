@@ -1,4 +1,4 @@
-import { ENV_VARS } from "constants";
+import { ENV_VARS } from "myconstants";
 import { sendRequest } from "utils";
 
 export const getCityCoords = async (cityName) => {

@@ -1,4 +1,4 @@
-import { ENV_VARS, NEEDED_PLACE_PROPS } from "constants";
+import { ENV_VARS, NEEDED_PLACE_PROPS } from "myconstants";
 import { sendRequest } from "utils";
 
 export const getPlaceInfo = async (id) => {

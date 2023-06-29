@@ -1,6 +1,5 @@
 import axios from "axios";
-
-import { BOT_FUNCTION_TYPE, ERROR_MESSAGES } from "constants";
+import { BOT_FUNCTION_TYPE, ERROR_MESSAGES } from "myconstants";
 
 export const botUseFunction = async (ctx, func, ...content) => {
     try {
@@ -18,7 +17,7 @@ export const botUseFunction = async (ctx, func, ...content) => {
                 break;
         }
     } catch (e) {
-        console.log(e);
+        await ctx.reply(ERROR_MESSAGES.WENT_WRONG);
     }
 };
 
@@ -43,6 +42,6 @@ export const sendRequest = async (url, method, data) => {
             return response.data;
         })
         .catch((error) => {
-            console.log(error.response.data);
+            // console.log(error.response.data);
         });
 };

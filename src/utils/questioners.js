@@ -1,6 +1,6 @@
-import { BOT_FUNCTION_TYPE, INPUT_REQUEST_MESSAGES, ERROR_MESSAGES } from "constants";
+import { BOT_FUNCTION_TYPE, ERROR_MESSAGES, INPUT_REQUEST_MESSAGES } from "myconstants";
 
-import { botUseFunction } from "utils";
+import { botUseFunction } from "./utils";
 import { isValidTime } from "./validators";
 
 export const askCityForSubscribe = async (ctx) => {

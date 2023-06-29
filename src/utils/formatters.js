@@ -30,13 +30,3 @@ export const formatTodoString = (id, title, content) => {
 ${content}
 `;
 };
-
-export const formatAllTodoStrings = (list) => {
-    let bufString = "";
-
-    for (const string of list) {
-        bufString += string;
-    }
-
-    return bufString;
-};

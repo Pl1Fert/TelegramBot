@@ -1,12 +1,11 @@
-import schedule from "node-schedule";
-
+import { Task } from "database/db";
 import {
     BOT_FUNCTION_TYPE,
     DAILY_REMINDER_MESSAGE,
     ERROR_MESSAGES,
     SUCCESS_MESSAGES,
-} from "constants";
-import { Task } from "database/db";
+} from "myconstants";
+import schedule from "node-schedule";
 import { botUseFunction, isValidTime } from "utils";
 
 import { showTodoList } from "./showTodoList";

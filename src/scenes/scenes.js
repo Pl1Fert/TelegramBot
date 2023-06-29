@@ -1,16 +1,15 @@
-import { SCENE_NAMES } from "constants";
 import { placesRecommendationHandler, weatherHandler, weatherSubscribeHandler } from "handlers";
+import { SCENE_NAMES } from "myconstants";
 import telegraf from "telegraf";
 import { addTodo, deleteTodo, todosSubscribeHandler } from "todoServices";
-
 import {
     askCity,
+    askCityForSubscribe,
     askTime,
     askTodoContent,
     askTodoNumber,
     askTodoTitle,
     notifyAboutError,
-    askCityForSubscribe,
 } from "utils";
 
 const {

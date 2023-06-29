@@ -1,6 +1,6 @@
+// eslint-disable-next-line max-classes-per-file
+import { ENV_VARS } from "myconstants";
 import pg from "pg";
-
-import { ENV_VARS } from "constants";
 
 const { Pool } = pg;
 
@@ -13,21 +13,17 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false },
 });
 
-pool.on("connect", () => {
-    console.log("connected to the database");
-});
+// pool.on("connect", () => {
+//     console.log("connected to the database");
+// });
 
 export const createDatabaseTables = () => {
     pool.query(
         "CREATE TABLE IF NOT EXISTS person (id INT NOT NULL UNIQUE,name VARCHAR(255))",
-        (err, res) => {
-            console.log(err, res);
-
+        () => {
             pool.query(
                 "CREATE TABLE IF NOT EXISTS todo (id SERIAL PRIMARY KEY,title VARCHAR(255),content VARCHAR(255),user_id INTEGER,FOREIGN KEY (user_id) REFERENCES person (id))",
-                (err, res) => {
-                    console.log(err, res);
-                }
+                () => {}
             );
         }
     );
@@ -43,9 +39,7 @@ export class User {
 
 export class Task {
     static async getAllTodos() {
-        let todos;
-
-        todos = await pool.query("SELECT * FROM todo");
+        const todos = await pool.query("SELECT * FROM todo");
 
         return todos;
     }
@@ -58,9 +52,7 @@ export class Task {
     }
 
     static async getUserTodos(userId) {
-        let todos;
-
-        todos = await pool.query("SELECT * FROM todo WHERE user_id = $1", [userId]);
+        const todos = await pool.query("SELECT * FROM todo WHERE user_id = $1", [userId]);
 
         return todos?.rows ?? [];
     }

@@ -1,11 +1,10 @@
-import { ENV_VARS, MAX_PLACES, PLACES_REQUEST_PARAMS } from "constants";
-
+import { ENV_VARS, MAX_PLACES, PLACES_REQUEST_PARAMS } from "myconstants";
 import { randomUniqueArray, sendRequest } from "utils";
 
 import { getPlaceInfo } from "./getPlaceInfo";
 
 export const getPlaces = async (coords) => {
-    const data = await sendRequest(
+    const placesData = await sendRequest(
         `${ENV_VARS.TRIPMAP_API_URL}/radius?radius=${PLACES_REQUEST_PARAMS.RADIUS}&lon=${
             coords.lon
         }&lat=${
@@ -27,8 +26,10 @@ export const getPlaces = async (coords) => {
 
     const array = [];
     const indexArray = randomUniqueArray(5, 19);
-    for (let i = 0; i < MAX_PLACES; i++) {
-        array.push(await getPlaceInfo(data[indexArray[i]].xid).then(delay.bind(null, 20)));
+
+    for (let i = 0; i < MAX_PLACES; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        array.push(await getPlaceInfo(placesData[indexArray[i]].xid).then(delay.bind(null, 20)));
     }
 
     return array;

@@ -1,11 +1,10 @@
-import { Markup } from "telegraf";
-
 import {
     BOT_FUNCTION_TYPE,
     BUTTONS_TEXT,
     BUTTONS_VALUE,
     WEATHER_SUBSCRIBE_MENU_MESSAGE,
-} from "constants";
+} from "myconstants";
+import { Markup } from "telegraf";
 import { botUseFunction } from "utils";
 
 export const subscribeMenuHandler = async (ctx) => {

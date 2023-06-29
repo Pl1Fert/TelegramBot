@@ -1,17 +1,17 @@
-const { resolve } = require("path");
+const path = require("path");
 
 const webpack = require("webpack");
 
-const DIR_NAME = resolve("./");
+const DIR_NAME = path.resolve("./");
 
 const mode = "development";
 
 module.exports = {
     mode,
-    context: resolve(DIR_NAME),
+    context: path.resolve(DIR_NAME),
     entry: "./src/app.js",
     output: {
-        path: resolve(DIR_NAME, "dist"),
+        path: path.resolve(DIR_NAME, "dist"),
         filename: "app.js",
         clean: true,
         publicPath: "/",
@@ -23,16 +23,41 @@ module.exports = {
     ],
     target: "node",
     resolve: {
-        extensions: [".js"],
         alias: {
-            api: resolve(DIR_NAME, "src/api/"),
-            sender: resolve(DIR_NAME, "src/sender/"),
-            constants: resolve(DIR_NAME, "src/constants/"),
-            database: resolve(DIR_NAME, "src/database/"),
-            handlers: resolve(DIR_NAME, "src/handlers/"),
-            scenes: resolve(DIR_NAME, "src/scenes/"),
-            todoServices: resolve(DIR_NAME, "src/todoServices/"),
-            utils: resolve(DIR_NAME, "src/utils/"),
+            api: path.resolve(DIR_NAME, "src/api/"),
+            myconstants: path.resolve("src/constants/"),
+            database: path.resolve(DIR_NAME, "src/database/"),
+            handlers: path.resolve(DIR_NAME, "src/handlers/"),
+            scenes: path.resolve(DIR_NAME, "src/scenes/"),
+            todoServices: path.resolve(DIR_NAME, "src/todoServices/"),
+            utils: path.resolve(DIR_NAME, "src/utils/"),
         },
+        extensions: ["", ".js"],
+        fallback: {
+            crypto: false,
+            util: false,
+            timers: false,
+            stream: false,
+            assert: false,
+            http: false,
+            https: false,
+            os: false,
+            url: false,
+            zlib: false,
+            constants: false,
+            querystring: false,
+            fs: false,
+            aws4: false,
+            snappy: false,
+            kerberos: false,
+        },
+    },
+    stats: {
+        errorDetails: true,
+    },
+    node: {
+        global: false,
+        __filename: false,
+        __dirname: false,
     },
 };
