@@ -1,6 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
-import { ENV_VARS } from "myconstants";
 import pg from "pg";
+
+import { ENV_VARS } from "../constants/index.js";
 
 const { Pool } = pg;
 

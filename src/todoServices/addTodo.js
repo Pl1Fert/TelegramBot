@@ -1,6 +1,6 @@
-import { Task } from "database/db";
-import { BOT_FUNCTION_TYPE, ERROR_MESSAGES, SUCCESS_MESSAGES } from "myconstants";
-import { botUseFunction } from "utils";
+import { BOT_FUNCTION_TYPE, ERROR_MESSAGES, SUCCESS_MESSAGES } from "../constants/index.js";
+import { Task } from "../database/db.js";
+import { botUseFunction } from "../utils/index.js";
 
 export const addTodo = async (ctx) => {
     ctx.session.todoContent = ctx.message.text;

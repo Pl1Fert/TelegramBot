@@ -1,5 +1,5 @@
-import { ENV_VARS, NEEDED_PLACE_PROPS } from "myconstants";
-import { sendRequest } from "utils";
+import { ENV_VARS, NEEDED_PLACE_PROPS } from "../constants/index.js";
+import { sendRequest } from "../utils/index.js";
 
 export const getPlaceInfo = async (id) => {
     const data = await sendRequest(

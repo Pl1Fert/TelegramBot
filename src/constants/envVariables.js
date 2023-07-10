@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const { BOT_TOKEN } = process.env;
 const { WEATHER_API_KEY } = process.env;
 const { TRIPMAP_API_KEY } = process.env;

@@ -1,7 +1,12 @@
-import { placesRecommendationHandler, weatherHandler, weatherSubscribeHandler } from "handlers";
-import { SCENE_NAMES } from "myconstants";
 import telegraf from "telegraf";
-import { addTodo, deleteTodo, todosSubscribeHandler } from "todoServices";
+
+import { SCENE_NAMES } from "../constants/index.js";
+import {
+    placesRecommendationHandler,
+    weatherHandler,
+    weatherSubscribeHandler,
+} from "../handlers/index.js";
+import { addTodo, deleteTodo, todosSubscribeHandler } from "../todoServices/index.js";
 import {
     askCity,
     askCityForSubscribe,
@@ -10,7 +15,7 @@ import {
     askTodoNumber,
     askTodoTitle,
     notifyAboutError,
-} from "utils";
+} from "../utils/index.js";
 
 const {
     Scenes: { WizardScene },

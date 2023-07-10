@@ -1,7 +1,8 @@
-import { getWeather } from "api";
-import { BOT_FUNCTION_TYPE, LOADING_MESSAGES } from "myconstants";
 import { Telegraf } from "telegraf";
-import { botUseFunction, formatWeatherString } from "utils";
+
+import { getWeather } from "../api/index.js";
+import { BOT_FUNCTION_TYPE, LOADING_MESSAGES } from "../constants/index.js";
+import { botUseFunction, formatWeatherString } from "../utils/index.js";
 
 export const weatherHandler = Telegraf.on("text", async (ctx) => {
     const weatherCity = ctx.message.text;

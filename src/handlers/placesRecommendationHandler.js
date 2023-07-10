@@ -1,7 +1,8 @@
-import { getCityCoords, getPlaces } from "api";
-import { BOT_FUNCTION_TYPE, LOADING_MESSAGES } from "myconstants";
 import { Telegraf } from "telegraf";
-import { botUseFunction, formatPlaceDescription } from "utils";
+
+import { getCityCoords, getPlaces } from "../api/index.js";
+import { BOT_FUNCTION_TYPE, LOADING_MESSAGES } from "../constants/index.js";
+import { botUseFunction, formatPlaceDescription } from "../utils/index.js";
 
 export const placesRecommendationHandler = Telegraf.on("text", async (ctx) => {
     const cityName = ctx.message.text;

@@ -1,5 +1,5 @@
-import { ENV_VARS } from "myconstants";
-import { sendRequest } from "utils";
+import { ENV_VARS } from "../constants/index.js";
+import { sendRequest } from "../utils/index.js";
 
 export const getWeather = async (cityName) => {
     const data = await sendRequest(

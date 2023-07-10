@@ -1,8 +1,9 @@
-import { getWeather } from "api";
-import { BOT_FUNCTION_TYPE, SUCCESS_MESSAGES } from "myconstants";
 import schedule from "node-schedule";
 import { Telegraf } from "telegraf";
-import { botUseFunction, formatWeatherString, isValidTime } from "utils";
+
+import { getWeather } from "../api/index.js";
+import { BOT_FUNCTION_TYPE, SUCCESS_MESSAGES } from "../constants/index.js";
+import { botUseFunction, formatWeatherString, isValidTime } from "../utils/index.js";
 
 let SCHEDULE_JOB;
 

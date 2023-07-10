@@ -1,5 +1,6 @@
 import axios from "axios";
-import { BOT_FUNCTION_TYPE, ERROR_MESSAGES } from "myconstants";
+
+import { BOT_FUNCTION_TYPE, ERROR_MESSAGES } from "../constants/index.js";
 
 export const botUseFunction = async (ctx, func, ...content) => {
     try {

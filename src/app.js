@@ -1,6 +1,5 @@
-import { createDatabaseTables, User } from "database/db";
-import dotenv from "dotenv";
-import { cancelWeatherScheduleJob, subscribeMenuHandler, todosMenuHandler } from "handlers";
+import telegraf from "telegraf";
+
 import {
     BOT_FUNCTION_TYPE,
     BUTTONS_VALUE,
@@ -11,7 +10,13 @@ import {
     LOADING_MESSAGES,
     SCENE_NAMES,
     SUCCESS_MESSAGES,
-} from "myconstants";
+} from "./constants/index.js";
+import { createDatabaseTables, User } from "./database/db.js";
+import {
+    cancelWeatherScheduleJob,
+    subscribeMenuHandler,
+    todosMenuHandler,
+} from "./handlers/index.js";
 import {
     addTodoScene,
     deleteTodoScene,
@@ -19,12 +24,9 @@ import {
     todosSubscribeScene,
     weatherScene,
     weatherSubscribeScene,
-} from "scenes/scenes";
-import telegraf from "telegraf";
-import { cancelTodosScheduleJob, showTodoList } from "todoServices";
-import { botUseFunction, quitScene, sendRequest } from "utils";
-
-dotenv.config();
+} from "./scenes/scenes.js";
+import { cancelTodosScheduleJob, showTodoList } from "./todoServices/index.js";
+import { botUseFunction, quitScene, sendRequest } from "./utils/index.js";
 
 const {
     Telegraf,

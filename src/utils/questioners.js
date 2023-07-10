@@ -1,7 +1,6 @@
-import { BOT_FUNCTION_TYPE, ERROR_MESSAGES, INPUT_REQUEST_MESSAGES } from "myconstants";
-
-import { botUseFunction } from "./utils";
-import { isValidTime } from "./validators";
+import { BOT_FUNCTION_TYPE, ERROR_MESSAGES, INPUT_REQUEST_MESSAGES } from "../constants/index.js";
+import { botUseFunction } from "./utils.js";
+import { isValidTime } from "./validators.js";
 
 export const askCityForSubscribe = async (ctx) => {
     const [hour, minute] = ctx.message.text.split(":");

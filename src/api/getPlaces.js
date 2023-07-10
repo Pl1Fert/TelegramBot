@@ -1,7 +1,6 @@
-import { ENV_VARS, MAX_PLACES, PLACES_REQUEST_PARAMS } from "myconstants";
-import { randomUniqueArray, sendRequest } from "utils";
-
-import { getPlaceInfo } from "./getPlaceInfo";
+import { ENV_VARS, MAX_PLACES, PLACES_REQUEST_PARAMS } from "../constants/index.js";
+import { randomUniqueArray, sendRequest } from "../utils/index.js";
+import { getPlaceInfo } from "./getPlaceInfo.js";
 
 export const getPlaces = async (coords) => {
     const placesData = await sendRequest(
