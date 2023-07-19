@@ -1,38 +1,43 @@
-const path = require("path");
+import { resolve as _resolve } from "path";
+import webpack from "webpack";
 
-const webpack = require("webpack");
-
-const DIR_NAME = path.resolve("./");
+const DIR_NAME = _resolve("./");
 
 const mode = "development";
 
-module.exports = {
+export default {
     mode,
-    context: path.resolve(DIR_NAME),
+    context: _resolve(DIR_NAME),
     entry: "./src/app.js",
     output: {
-        path: path.resolve(DIR_NAME, "dist"),
+        path: _resolve(DIR_NAME, "dist"),
         filename: "app.js",
         clean: true,
         publicPath: "/",
+    },
+    devServer: {
+        hot: true,
+        historyApiFallback: true,
     },
     plugins: [
         new webpack.IgnorePlugin({
             resourceRegExp: /^pg-native$|^cloudflare:sockets$/,
         }),
     ],
+    module: {},
     target: "node",
     resolve: {
+        extensions: [".js"],
         alias: {
-            api: path.resolve(DIR_NAME, "src/api/"),
-            myconstants: path.resolve("src/constants/"),
-            database: path.resolve(DIR_NAME, "src/database/"),
-            handlers: path.resolve(DIR_NAME, "src/handlers/"),
-            scenes: path.resolve(DIR_NAME, "src/scenes/"),
-            todoServices: path.resolve(DIR_NAME, "src/todoServices/"),
-            utils: path.resolve(DIR_NAME, "src/utils/"),
+            api: _resolve(DIR_NAME, "src/api/"),
+            sender: _resolve(DIR_NAME, "src/sender/"),
+            constants: _resolve(DIR_NAME, "src/constants/"),
+            database: _resolve(DIR_NAME, "src/database/"),
+            handlers: _resolve(DIR_NAME, "src/handlers/"),
+            scenes: _resolve(DIR_NAME, "src/scenes/"),
+            todoServices: _resolve(DIR_NAME, "src/todoServices/"),
+            utils: _resolve(DIR_NAME, "src/utils/"),
         },
-        extensions: ["", ".js"],
         fallback: {
             crypto: false,
             util: false,
